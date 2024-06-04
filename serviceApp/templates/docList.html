@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+资料下载
+{% endblock %}
+
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/news.css' %}">
+<div class="container-fluid">
+    <div class="row">
+        <img class="img-responsive model-img" src="{% static 'img/service.jpg' %}">
+    </div>
+</div>
+
+<div class="container">
+    <div class="row row-3">
+        <div class="col-md-3">
+            <div class="model-title">
+                产品中心
+            </div>
+            <div class="model-list">
+                <ul class="list-group">
+                    <li class="list-group-item" id="download">
+                        <!-- 空2：补充url -->
+                        <a href="{% url 'serviceApp:download'   %}">资料下载</a>
+                    </li>
+                    <li class="list-group-item" id="platform">
+                        <!-- 空3：补充url -->
+                        <a href="{% url 'serviceApp:platform'   %}">人脸识别开放平台  </a>
+                    </li>
+                
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="model-details-title">
+                <!-- 空5：新闻类型作为标题 -->
+                资料下载
+                <div class="col-md-7 hidden-xs model-details-title-search">
+                    <form method="get" id="searchform" action="{% url 'haystack_search' %}">
+                        {%csrf_token%}
+                        <div class="input-group">
+                            <input type="text" name="q" class="form-control" placeholder="请输入关键词" required />
+                            <span class="input-group-btn">
+                                <input type="submit" class="btn btn-default" value="查询" />
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="model-details">
+                <!-- 空6：使用for循环显示新闻 -->
+                {% for doc in docList %}
+                <div class="news-model">
+                    <img src="{% static 'img/newsicon.gif' %}">
+                    <!-- 空7：将每条新闻的id作为参数动态地绑定到访问路径中，通过使用逆向解析的方式得到每条新闻的真实URL -->
+                    <!-- 空8：显示新闻标题 -->
+                    <a href="{% url 'serviceApp:getDoc' doc.id %}"><b>{{doc.title}}</b></a>
+                    
+                    
+                    <!-- 空9：以年-月-日的形式显示新闻发布时间 -->
+                    <span>【{{mynew.publishDate|date:"Y-m-d"}}】</span>
+                  
+                </div>
+                {% endfor %}
+
+                {% if pageData %}
+                <div class="paging">
+                    <ul id="pages" class="pagination pagination-sm pagination-xs">
+                        {% if pageData.first %}
+                        <li><a href="?page=1">1</a></li>
+                        {% endif %}
+                        {% if pageData.left %}
+                        {% if pageData.left_has_more %}
+                        <li><span>...</span></li>
+                        {% endif %}
+                        {% for i in pageData.left %}
+                        <li><a href="?page={{i}}">{{i}}</a></li>
+                        {% endfor %}
+                        {% endif %}
+                        <li class="active"><a href="?page={{pageData.page}}">{{pageData.page}}</a></li>
+                        {% if pageData.right %}
+                        {% for i in pageData.right %}
+                        <li><a href="?page={{i}}">{{i}}</a></li>
+                        {% endfor %}
+                        {% if pageData.right_has_more %}
+                        <li><span>...</span></li>
+                        {% endif %}
+                        {% endif %}
+                        {% if pageData.last %}
+                        <li><a href="?page={{pageData.total_pages}}">{{pageData.total_pages}}</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

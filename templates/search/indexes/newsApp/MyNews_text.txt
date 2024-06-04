@@ -1,0 +1,2 @@
+{{obhect.title}}
+{{object.description}}

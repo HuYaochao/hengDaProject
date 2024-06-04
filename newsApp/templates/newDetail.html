@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+新闻详情
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/news.css' %}">
+<div class="container">
+    <div class="model-details-product-title">
+        <!-- 空1：新闻标题 -->
+        {{mynew}}
+        <!-- 空2：发布时间按年-月-日形式显示 -->
+        <!-- 空3：浏览次数 -->
+        <div class="model-foot">发布时间：{{mynew.publishDate|date:"Y-m-d"}}&nbsp;&nbsp;浏览次数：{{mynew.views}}</div>
+    </div>
+    <div class="model-details">
+        <!-- 空4：渲染新闻内容（由于内容为富文本，因此需要使用safe过滤器，将字符串标记为安全，不进行转义） -->
+        {{ mynew.description|safe}}
+    </div>
+</div>
+{% endblock %}

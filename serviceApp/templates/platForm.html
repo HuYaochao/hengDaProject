@@ -1,0 +1,175 @@
+{% extends "base.html" %} {% load static %} {% block title %} 人脸识别开放平台
+{% endblock %} {% block content %}
+<link rel="stylesheet" href="{% static 'css/codemirror.css' %}" />
+<script src="{% static 'js/codemirror.js' %}"></script>
+<script src="{% static 'js/python.js' %}"></script>
+<style type="text/css">
+  .CodeMirror {
+    border: 1px solid black;
+    border-bottom: 1px solid black;
+  }
+</style>
+
+<link rel="stylesheet" href="{% static 'css/news.css' %}" />
+<div class="container-fluid">
+  <div class="row">
+    <img
+      class="img-responsive model-img"
+      src="{% static 'img/service.jpg' %}"
+    />
+  </div>
+</div>
+
+<div class="container">
+  <div class="row row-3">
+    <div class="col-md-3">
+      <div class="model-title">服务支持</div>
+      <div class="model-list">
+        <ul class="list-group">
+          <li class="list-group-item" id="download">
+            <a href="{% url 'serviceApp:download' %}">资料下载</a>
+          </li>
+          <li class="list-group-item" id="platform">
+            <a href="{% url 'serviceApp:platform' %}">人脸识别开放平台</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="model-details-title">人脸开放平台</div>
+
+      <div class="model-details">
+        <!-- Button trigger modal -->
+        <button
+          type="button"
+          class="btn btn-primary btn-lg"
+          data-toggle="modal"
+          data-target="#myModal"
+        >
+          人脸检测
+        </button>
+
+        <!-- Modal -->
+        <div
+          class="modal fade"
+          id="myModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="myModalLabel"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">在线人脸检测</h4>
+              </div>
+              <div class="modal-body">
+                <img
+                  id="photoIn"
+                  src="{% static 'img/sample.png' %}"
+                  class="img-responsive"
+                  style="max-width: 250px"
+                />
+                <input type="file" name="photo" id="photo" />
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-default"
+                  data-dismiss="modal"
+                >
+                  关闭
+                </button>
+                <button type="button" id="compute" class="btn btn-primary">
+                  开始检测
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <textarea name="code" id="code">
+                    import cv2
+import requests
+url = "http://localhost:8000/serviceApp/facedetect/"
+
+# 上传图像
+tracker = None
+imgPath = "face.jpg"
+files = {
+    "image": ("filename2", open(imgPath, "rb"), "image/jpeg"),
+}
+
+req = requests.post(url, data=tracker, files=files).json()
+print("获取信息：{}".format(req))
+
+# 显示检测结果
+img = cv2.imread(imgPath)
+for (w, x, y, z) in req["faces"]:
+    cv2.rectangle(img, (w, x), (y, z), (0, 255, 0), 2)
+
+cv2.imshow("face detection", img)
+cv2.waitKey(0)
+                </textarea
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    mode: {
+      name: "python",
+      version: 3,
+      singleLineStringErrors: false,
+    },
+    lineNumbers: true,
+    indentUnit: 4,
+    tabMode: "shift",
+    matchBrackets: true,
+  });
+</script>
+<script>
+  $(function () {
+    $("#photo").on("change", function () {
+      var r = new FileReader();
+      f = document.getElementById("photo").files[0];
+      r.readAsDataURL(f);
+      r.onload = function (e) {
+        document.getElementById("photoIn").src = this.result;
+      };
+    });
+  });
+</script>
+<script>
+  $("#compute").click(function () {
+    formData = new FormData();
+    var file = $("#photo")[0].files[0];
+    formData.append("image", file);
+    $.ajax({
+      url: "/serviceApp/facedetectDemo/",
+      type: "POST",
+      data: formData,
+      dataType: "json",
+      contentType: false,
+      processData: false,
+      success: ShowResult,
+    });
+  });
+</script>
+<script>
+    function ShowResult(data) {
+      var v = data['img64'];
+      document.getElementById("photoIn").src = "data:image/jpeg;base64," + v;
+      
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,25 @@
+.paging{
+    text-align: center;
+}
+.pagination .active a{
+    background-color: #005197;
+    border-color: #005197;
+}
+
+.model-details .row-4{
+    margin-top: 20px;
+}
+
+.model-details .row-5{
+    margin-top: none;
+}
+
+.model-details-product-title{
+    padding: 15px 0px;
+    font-size: 18px;
+    border-bottom: 1px #005197 solid;
+    color: #005197;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align:center;
+}
