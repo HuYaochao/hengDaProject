@@ -1,4 +1,5 @@
-{% extends "base.html" %} {% load static %} {% block title %} 首页 {% endblock%} {% block content %}
+{% extends "base.html" %} {% load static %} {% block title %} 首页 {% endblock%}
+{% block content %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}" />
 <script src="{% static 'js/jqthumb.min.js' %}"></script>
 
@@ -90,20 +91,21 @@
       </div>
       <div class="col-md-5">
         <!-- 轮播图 -->
-        <div
-          id="myCarousel"
-          class="carousel slide"
-          data-ride="carousel"
-        >
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
           <!-- Indicators -->
           <ol class="carousel-indicators">
             {% for post in postList %}
             <li
               data-target="#myCarousel"
               data-slide-to="{{ forloop.counter0 }}"
-              {% if forloop.first %}
+              {%
+              if
+              forloop.first
+              %}
               class="active"
-              {% endif %}
+              {%
+              endif
+              %}
             ></li>
             {% endfor%}
           </ol>
@@ -111,13 +113,30 @@
           <!-- Wrapper for slides -->
           <div class="carousel-inner" role="listbox">
             {% for post in postList %}
-            <div {% if forloop.first %} class="item active" {% else %} class="item" {% endif %}>
+            <div
+              {%
+              if
+              forloop.first
+              %}
+              class="item active"
+              {%
+              else
+              %}
+              class="item"
+              {%
+              endif
+              %}
+            >
               <a href="{% url 'newsApp:newDetail' post.id %}">
-                <img src="{{ post.photo.url }}" class="img-responsive" onload="DrawImage(this)" >
+                <img
+                  src="{{ post.photo.url }}"
+                  class="img-responsive"
+                  onload="DrawImage(this)"
+                />
               </a>
               <div class="carousel-caption nav-title">{{post.title}}</div>
-              </div>
-              {% endfor %}
+            </div>
+            {% endfor %}
           </div>
         </div>
       </div>
@@ -142,7 +161,11 @@
         <a href="#">通知公告</a>
       </span>
       <span class="part1 en"> &nbsp;&nbsp;/Public Release </span>
-      <a class="btn btn-default btn-xs more-btn" href="{% url 'newsApp:news' 'notice' %}">+&nbsp;更多</a>
+      <a
+        class="btn btn-default btn-xs more-btn"
+        href="{% url 'newsApp:news' 'notice' %}"
+        >+&nbsp;更多</a
+      >
       <div class="line1">
         <div class="line2 theme"></div>
       </div>
@@ -154,36 +177,120 @@
             <a href="{% url 'newsApp:newDetail' note.id %}">
               {{note.title|truncatechars:"25"}}
             </a>
-            <a href="{% url 'newsApp:newDetail' note.id %}" class="public-detail">
+            <a
+              href="{% url 'newsApp:newDetail' note.id %}"
+              class="public-detail"
+            >
               查看详情>>
             </a>
-            
           </li>
           {% endfor %}
         </ul>
       </div>
-
     </div>
     <!-- 科研基地 -->
-    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <span class="part1">
+        <a href="{% url 'scienceApp:science' %}">科研基地</a>
+      </span>
+      <span class="part1 en"> &nbsp;&nbsp;/Technology Center </span>
+      <div class="line1">
+        <div class="line2 theme"></div>
+      </div>
+      <div>
+        <a href="{% url 'scienceApp:science' %}">
+          <img class="img-responsive" src="{% static 'img/ky.jpg' %}" />
+        </a>
+        <p class="text1">
+          <font color="#d30a1c">恒达科技科研基地</font>
+          恒达科技科研基地 恒达科研基地分为计算机视觉、
+          机器人和视觉深度学习三个事业部，共拥有高级研发人员近30名，
+          以各领域高级工程师和知名院校博士为主体的多层次研发梯队。当前，科研基地优秀的技术团队
+          已为恒达在人脸识别、物联网平台搭建、机器人导航等 领域打下了坚实基础
+        </p>
+      </div>
+    </div>
     <!-- 联系我们 -->
-    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <span class="part1">
+        <a href="{% url 'contactApp:contact' %}">联系我们</a>
+      </span>
+      <span class="part1 en"> &nbsp;&nbsp;/Contact us </span>
+      <div class="line1">
+        <div class="line2 theme"></div>
+      </div>
+      <div>
+        <ul class="list-unstyled procurement-li">
+          <li>业务质询一：111-XXXXXXX</li>
+          <li>业务质询二：222-XXXXXX</li>
+          <li>咨询电话：0111-XXXXXX</li>
+          <li>企业传真：111-XXXXXXX</li>
+          <li>地址：某某某新区某某大道1号</li>
+          <li>邮编：XXXXXX</li>
+          <li>
+            网址：<a href="http://python3web.com">https://python3web.com</a>
+          </li>
+        </ul>
+        <div class="platform">
+          <a href="{% url 'contactApp:contact' %}">详情</a>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="row row-3">
     <!-- 产品中心 -->
-    <div class="col-md-12 col-pro"></div>
+    <div class="col-md-12 col-pro">
+      <span class="part1">
+        <a href="{% url 'productsApp:products' 'robot' %}">产品中心</a>
+      </span>
+      <span class="part1 en"> &nbsp;&nbsp;/Products </span>
+      <a
+        class="btn btn-default btn-xs more-btn"
+        href="{% url 'productsApp:products' 'robot' %}"
+        >+&nbsp;更多</a
+      >
+      <div class="line1" style="margin-bottom: 5px">
+        <div class="line2 theme"></div>
+      </div>
+      <div id="Carousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+          <li data-target="#Carousel" data-slide-to="0" class="active"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+          {% for product in productList %}
+          <div class="col-md-3 pro-images">
+            <a
+              href="{% url 'productsApp:productDetail' product.id %}"
+              class="thumbnail"
+            >
+              {% for img in product.productImgs.all %} {% if forloop.first %}
+              <img
+                src="{{img.photo.url}}"
+                class="img-responsive"
+                onload="DrawImage(this)"
+              />
+              {% endif %} {% endfor %}
+            </a>
+            <div class="carousel-caption nav-title">{{product.title}}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
-  function DrawImage(hotimg){
-    $(hotimg).jqthumb
-    ({
-      width: '100%',
-      height: '250px',
-      zoom:'1',
-      method:'auto',
-    })
+  function DrawImage(hotimg) {
+    $(hotimg).jqthumb({
+      width: "100%",
+      height: "250px",
+      zoom: "1",
+      method: "auto",
+    });
   }
 </script>
 

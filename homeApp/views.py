@@ -3,6 +3,7 @@ from django.shortcuts import HttpResponse
 from django.db.models import Q
 from newsApp.models import MyNews
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from productsApp.models import Product
 
 
 # Create your views here.
@@ -29,10 +30,16 @@ def home(request):
     if(len(noteList)>4):
         noteList = noteList[0:4]
 
+    #产品列表
+    productList = Product.objects.all().order_by('-views')
+    if(len(productList)>4):
+        productList = productList[0:4]
+
     
     return render(request, 'home.html',
                   {'active_menu':'home',
                   'newList':newList,
                   'postList':postList,
                   'noteList':noteList,
+                  'productList':productList,
                   })
