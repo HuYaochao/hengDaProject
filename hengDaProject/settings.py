@@ -155,3 +155,14 @@ EMAIL_PORT = 25                              # 端口号
 EMAIL_HOST_USER = '1723856501@qq.com'           # 企业QQ账号
 EMAIL_HOST_PASSWORD = 'cweltpythqeubjhf'        # 授权码
 EMAIL_USE_TLS = True
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache", #设置缓存使用何种后台
+        "LOCATION": "cache_table_home",      # 数据库表名
+        "TIMEOUT": 600,                   # 缓存超时时间（默认300秒，None表示永不过期，0表示立即过期）
+        "OPTIONS": {
+            'MAX_ENTRIES': 2000,                  # 最大缓存个数（默认300个）
+    }
+}
+}

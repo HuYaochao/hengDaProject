@@ -4,8 +4,9 @@ from django.db.models import Q
 from newsApp.models import MyNews
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from productsApp.models import Product
+from django.views.decorators.cache import cache_page
 
-
+@cache_page(60 * 15)
 # Create your views here.
 
 def home(request):
